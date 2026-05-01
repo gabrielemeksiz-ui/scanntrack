@@ -36,8 +36,8 @@ export default async function BonsPage() {
 
   const statusLabel: Record<string, string> = {
     brouillon: "En cours",
-    valide: "Valid\u00e9",
-    annule: "Annul\u00e9",
+    valide: "Validé",
+    annule: "Annulé",
   };
 
   const statusColor: Record<string, string> = {
@@ -62,9 +62,9 @@ export default async function BonsPage() {
       {!bons || bons.length === 0 ? (
         <div className="bg-white rounded-2xl shadow p-8 text-center text-gray-500">
           <p className="text-lg mb-2">Aucun bon pour le moment.</p>
-          <p className="text-sm mb-4">Cr\u00e9ez un bon en scannant des pi\u00e8ces.</p>
+          <p className="text-sm mb-4">Créez un bon en scannant des pièces.</p>
           <Link href="/scan" className="text-[#1F3A5F] hover:underline font-medium">
-            Cr\u00e9er un premier bon →
+            Créer un premier bon →
           </Link>
         </div>
       ) : (
@@ -76,7 +76,7 @@ export default async function BonsPage() {
                   <th className="text-left p-4 font-medium">Date</th>
                   <th className="text-left p-4 font-medium">Chantier</th>
                   <th className="text-left p-4 font-medium">Chef</th>
-                  <th className="text-left p-4 font-medium">Pi\u00e8ces</th>
+                  <th className="text-left p-4 font-medium">Pièces</th>
                   <th className="text-left p-4 font-medium">Statut</th>
                   <th className="text-left p-4 font-medium">PDF</th>
                 </tr>

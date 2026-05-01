@@ -9,7 +9,7 @@ const links = [
   { href: "/scan", label: "Scanner", icon: ScanLine },
   { href: "/bons", label: "Mes bons", icon: ClipboardList },
   { href: "/chantiers", label: "Chantiers", icon: Building2 },
-  { href: "/catalogue", label: "R\u00e9f\u00e9rences", icon: BookOpen },
+  { href: "/catalogue", label: "Références", icon: BookOpen },
 ];
 
 export default function NavBar() {
@@ -51,7 +51,7 @@ export default function NavBar() {
               className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-white/70 hover:text-white hover:bg-white/10 transition"
             >
               <LogOut className="w-4 h-4" />
-              D\u00e9connexion
+              Déconnexion
             </button>
           </form>
         </nav>

@@ -9,8 +9,8 @@ export default async function CataloguePage() {
 
   const { data: pieces, error } = await supabase
     .from("pieces")
-    .select("id, code, designation, categorie, unite, prix_unitaire, stock_actuel, seuil_alerte")
-    .order("designation")
+    .select("id, ref_interne, nom, categorie, unite, prix_unitaire, stock_actuel, seuil_alerte")
+    .order("nom")
     .limit(200);
 
   if (error) {
@@ -58,8 +58,8 @@ export default async function CataloguePage() {
                   const alerte = p.stock_actuel <= p.seuil_alerte;
                   return (
                     <tr key={p.id} className="border-b hover:bg-gray-50">
-                      <td className="p-4 font-mono text-xs">{p.code}</td>
-                      <td className="p-4 font-medium">{p.designation}</td>
+                      <td className="p-4 font-mono text-xs">{p.ref_interne}</td>
+                      <td className="p-4 font-medium">{p.nom}</td>
                       <td className="p-4 text-gray-500">{p.categorie || "—"}</td>
                       <td className="p-4">{p.unite || "—"}</td>
                       <td className="p-4">
