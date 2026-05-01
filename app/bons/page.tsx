@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import BackButton from "@/components/back-button";
 
 export default async function BonsPage() {
   const supabase = await createClient();
@@ -34,87 +35,87 @@ export default async function BonsPage() {
   }
 
   const statusLabel: Record<string, string> = {
-    brouillon: "Brouillon",
-    valide: "Validé",
-    annule: "Annulé",
+    brouillon: "En cours",
+    valide: "Valid\u00e9",
+    annule: "Annul\u00e9",
   };
 
   const statusColor: Record<string, string> = {
-    brouillon: "bg-gray-100 text-gray-700",
-    valide: "bg-green-100 text-green-700",
-    annule: "bg-red-100 text-red-700",
+    brouillon: "bg-yellow-100 text-yellow-800",
+    valide: "bg-green-100 text-green-800",
+    annule: "bg-red-100 text-red-800",
   };
 
   return (
     <div className="p-6 max-w-6xl mx-auto">
+      <BackButton />
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-3xl font-bold text-primary">Bons de sortie</h1>
+        <h1 className="text-3xl font-bold text-[#1F3A5F]">Mes bons de sortie</h1>
         <Link
           href="/scan"
-          className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition"
+          className="bg-[#1F3A5F] text-white px-5 py-3 rounded-xl hover:bg-[#152a45] transition font-medium"
         >
           + Nouveau bon
         </Link>
       </div>
 
       {!bons || bons.length === 0 ? (
-        <div className="bg-white rounded-2xl shadow p-8 text-center text-muted-foreground">
-          Aucun bon de sortie pour le moment.
-          <div className="mt-4">
-            <Link href="/scan" className="text-primary hover:underline">
-              Créer un premier bon →
-            </Link>
-          </div>
+        <div className="bg-white rounded-2xl shadow p-8 text-center text-gray-500">
+          <p className="text-lg mb-2">Aucun bon pour le moment.</p>
+          <p className="text-sm mb-4">Cr\u00e9ez un bon en scannant des pi\u00e8ces.</p>
+          <Link href="/scan" className="text-[#1F3A5F] hover:underline font-medium">
+            Cr\u00e9er un premier bon →
+          </Link>
         </div>
       ) : (
         <div className="bg-white rounded-2xl shadow overflow-hidden">
-          <table className="w-full text-sm">
-            <thead className="bg-gray-50 border-b">
-              <tr>
-                <th className="text-left p-4 font-medium">N°</th>
-                <th className="text-left p-4 font-medium">Date</th>
-                <th className="text-left p-4 font-medium">Chantier</th>
-                <th className="text-left p-4 font-medium">Chef d&apos;équipe</th>
-                <th className="text-left p-4 font-medium">Lignes</th>
-                <th className="text-left p-4 font-medium">Statut</th>
-                <th className="text-left p-4 font-medium">PDF</th>
-              </tr>
-            </thead>
-            <tbody>
-              {bons.map((bon: any) => (
-                <tr key={bon.id} className="border-b hover:bg-gray-50">
-                  <td className="p-4 font-mono text-xs">{bon.id.slice(0, 8)}</td>
-                  <td className="p-4">
-                    {new Date(bon.created_at).toLocaleDateString("fr-FR")}
-                  </td>
-                  <td className="p-4">{bon.chantier_nom || "—"}</td>
-                  <td className="p-4">
-                    {bon.profiles?.prenom} {bon.profiles?.nom}
-                  </td>
-                  <td className="p-4">{bon.bon_lignes?.[0]?.count ?? 0}</td>
-                  <td className="p-4">
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${statusColor[bon.status] || "bg-gray-100"}`}>
-                      {statusLabel[bon.status] || bon.status}
-                    </span>
-                  </td>
-                  <td className="p-4">
-                    {bon.pdf_url ? (
-                      <a
-                        href={bon.pdf_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-primary hover:underline"
-                      >
-                        Voir PDF
-                      </a>
-                    ) : (
-                      <span className="text-muted-foreground">—</span>
-                    )}
-                  </td>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead className="bg-gray-50 border-b">
+                <tr>
+                  <th className="text-left p-4 font-medium">Date</th>
+                  <th className="text-left p-4 font-medium">Chantier</th>
+                  <th className="text-left p-4 font-medium">Chef</th>
+                  <th className="text-left p-4 font-medium">Pi\u00e8ces</th>
+                  <th className="text-left p-4 font-medium">Statut</th>
+                  <th className="text-left p-4 font-medium">PDF</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {bons.map((bon: any) => (
+                  <tr key={bon.id} className="border-b hover:bg-gray-50">
+                    <td className="p-4">
+                      {new Date(bon.created_at).toLocaleDateString("fr-FR")}
+                    </td>
+                    <td className="p-4 font-medium">{bon.chantier_nom || "—"}</td>
+                    <td className="p-4">
+                      {bon.profiles?.prenom} {bon.profiles?.nom}
+                    </td>
+                    <td className="p-4">{bon.bon_lignes?.[0]?.count ?? 0}</td>
+                    <td className="p-4">
+                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${statusColor[bon.status] || "bg-gray-100"}`}>
+                        {statusLabel[bon.status] || bon.status}
+                      </span>
+                    </td>
+                    <td className="p-4">
+                      {bon.pdf_url ? (
+                        <a
+                          href={bon.pdf_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-[#1F3A5F] hover:underline font-medium"
+                        >
+                          Voir le PDF
+                        </a>
+                      ) : (
+                        <span className="text-gray-400">—</span>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
     </div>

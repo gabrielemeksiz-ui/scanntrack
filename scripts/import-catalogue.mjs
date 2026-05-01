@@ -51,10 +51,17 @@ if (!filePath) {
 console.log(`📖 Lecture de ${filePath}...`);
 const buf = readFileSync(resolve(filePath));
 const wb = XLSX.read(buf, { type: "buffer" });
-const sheet = wb.Sheets[wb.SheetNames[0]];
+
+// Cherche la feuille "CONSOMMABLES" (insensible à la casse)
+const sheetName = wb.SheetNames.find(
+  (n) => n.toLowerCase().trim() === "consommables"
+) || wb.SheetNames[0];
+
+console.log(`📄 Feuille utilisée : "${sheetName}"`);
+const sheet = wb.Sheets[sheetName];
 const rows = XLSX.utils.sheet_to_json(sheet, { defval: "" });
 
-console.log(`✓ ${rows.length} lignes lues dans la 1ère feuille`);
+console.log(`✓ ${rows.length} lignes lues`);
 
 // ----- Normalisation des clés -----
 function normKey(k) {

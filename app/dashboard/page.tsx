@@ -44,9 +44,9 @@ export default async function DashboardPage() {
 
   return (
     <div className="p-6 max-w-6xl mx-auto">
-      <h1 className="text-3xl font-bold text-primary mb-2">Dashboard</h1>
-      <p className="text-muted-foreground mb-8">
-        Bonjour {profile.prenom}. Voici l&apos;activité du jour.
+      <h1 className="text-3xl font-bold text-[#1F3A5F] mb-2">Tableau de bord</h1>
+      <p className="text-gray-500 mb-8">
+        Bonjour {profile.prenom}. Voici le résumé de la journée.
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
@@ -56,40 +56,30 @@ export default async function DashboardPage() {
           href="/bons"
         />
         <StatCard
-          label="Alertes stock actives"
+          label="Alertes stock"
           value={alertesActives ?? 0}
           href="/catalogue"
           highlight={(alertesActives ?? 0) > 0}
         />
         <StatCard
-          label="Chantiers actifs"
+          label="Chantiers en cours"
           value={chantiers ?? 0}
           href="/chantiers"
         />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-        <LinkCard
-          title="Nouveau bon de sortie"
-          desc="Scanner des pièces et valider un bon"
+        <BigButton
+          title="+ Nouveau bon de sortie"
+          desc="Scanner des pièces pour un chantier"
           href="/scan"
           accent
         />
-        <LinkCard
-          title="Catalogue des pièces"
-          desc={`${totalPieces ?? 0} références disponibles`}
+        <BigButton
+          title="Voir le catalogue"
+          desc={`${totalPieces ?? 0} références en stock`}
           href="/catalogue"
         />
-      </div>
-
-      <div className="bg-white rounded-2xl shadow p-6">
-        <h2 className="font-bold mb-4">Navigation rapide</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <QuickLink href="/bons" label="📋 Liste des bons" desc="Historique et suivi" />
-          <QuickLink href="/chantiers" label="🏗️ Chantiers" desc="Tous les projets" />
-          <QuickLink href="/catalogue" label="📚 Catalogue" desc="Pièces et stocks" />
-          <QuickLink href="/scan" label="📱 Scanner" desc="Créer un bon" />
-        </div>
       </div>
     </div>
   );
@@ -113,10 +103,10 @@ function StatCard({
         highlight ? "ring-2 ring-red-300" : ""
       }`}
     >
-      <p className="text-sm text-muted-foreground">{label}</p>
+      <p className="text-sm text-gray-500">{label}</p>
       <p
         className={`text-4xl font-bold mt-2 ${
-          highlight ? "text-red-600" : "text-primary"
+          highlight ? "text-red-600" : "text-[#1F3A5F]"
         }`}
       >
         {value}
@@ -125,7 +115,7 @@ function StatCard({
   );
 }
 
-function LinkCard({
+function BigButton({
   title,
   desc,
   href,
@@ -139,41 +129,18 @@ function LinkCard({
   return (
     <a
       href={href}
-      className={`block rounded-2xl p-6 hover:shadow-lg transition-shadow ${
+      className={`block rounded-2xl p-6 text-center hover:shadow-lg transition-shadow ${
         accent
-          ? "bg-primary text-white shadow"
+          ? "bg-[#1F3A5F] text-white shadow"
           : "bg-white shadow"
       }`}
     >
-      <h3 className={`font-bold text-lg ${accent ? "" : "text-primary"}`}>
-        {title} →
+      <h3 className={`font-bold text-xl ${accent ? "" : "text-[#1F3A5F]"}`}>
+        {title}
       </h3>
-      <p className={`text-sm mt-1 ${accent ? "text-white/80" : "text-muted-foreground"}`}>
+      <p className={`text-sm mt-2 ${accent ? "text-white/80" : "text-gray-500"}`}>
         {desc}
       </p>
-    </a>
-  );
-}
-
-function QuickLink({
-  href,
-  label,
-  desc,
-}: {
-  href: string;
-  label: string;
-  desc: string;
-}) {
-  return (
-    <a
-      href={href}
-      className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 transition-colors"
-    >
-      <div className="flex-1">
-        <p className="font-medium">{label}</p>
-        <p className="text-xs text-muted-foreground">{desc}</p>
-      </div>
-      <span className="text-muted-foreground">→</span>
     </a>
   );
 }

@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import NavBar from "@/components/nav-bar";
 
 export const metadata: Metadata = {
   title: "ScannTrack",
@@ -23,7 +24,8 @@ export default function RootLayout({
   return (
     <html lang="fr">
       <body className="min-h-screen bg-background font-sans antialiased">
-        {children}
+        <NavBar />
+        <main className="pb-20">{children}</main>
       </body>
     </html>
   );
