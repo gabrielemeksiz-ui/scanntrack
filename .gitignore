@@ -1,0 +1,16 @@
+node_modules/
+.next/
+.env
+.env.local
+.env*.local
+.DS_Store
+*.log
+.vercel
+out/
+build/
+dist/
+
+# Don't commit the catalogue Excel or generated QR PDFs (data privée du client)
+*.xlsx
+!docs/exemple-catalogue.xlsx
+public/qr-codes/*.pdf
