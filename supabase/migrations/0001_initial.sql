@@ -7,6 +7,7 @@
 
 -- Extensions
 create extension if not exists "uuid-ossp";
+create extension if not exists "pgcrypto";
 
 -- =============================================================
 -- 1. PROFILS UTILISATEURS
@@ -37,7 +38,7 @@ create index idx_profiles_equipe on public.profiles(equipe_num);
 -- =============================================================
 
 create table public.pieces (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   ref_interne text not null unique,           -- code unique encodé dans le QR
   nom text not null,
   description text,
@@ -65,7 +66,7 @@ create index idx_pieces_alerte on public.pieces(stock_actuel, seuil_alerte) wher
 -- =============================================================
 
 create table public.chantiers (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   nom text not null,
   client text,
   adresse text,
@@ -87,7 +88,7 @@ create index idx_chantiers_nom on public.chantiers using gin (to_tsvector('frenc
 create type bon_status as enum ('en_cours', 'valide', 'annule');
 
 create table public.bons_sortie (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   numero serial,                               -- numéro lisible (BS-2025-0001)
   user_id uuid not null references public.profiles(id),
   chantier_id uuid references public.chantiers(id),
@@ -111,7 +112,7 @@ create index idx_bons_created on public.bons_sortie(created_at desc);
 -- =============================================================
 
 create table public.bon_lignes (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   bon_id uuid not null references public.bons_sortie(id) on delete cascade,
   piece_id uuid not null references public.pieces(id),
   quantite numeric(10, 2) not null check (quantite > 0),
@@ -132,7 +133,7 @@ create index idx_bon_lignes_piece on public.bon_lignes(piece_id);
 create type mouvement_type as enum ('entree', 'sortie', 'ajustement', 'retour');
 
 create table public.mouvements (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   piece_id uuid not null references public.pieces(id),
   type mouvement_type not null,
   quantite numeric(10, 2) not null,            -- positif = +stock, négatif = -stock
@@ -157,7 +158,7 @@ create index idx_mouvements_type on public.mouvements(type);
 -- Trace des alertes envoyées pour éviter le spam
 
 create table public.alertes (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   piece_id uuid not null references public.pieces(id),
   stock_au_moment numeric(10, 2) not null,
   seuil_au_moment numeric(10, 2) not null,

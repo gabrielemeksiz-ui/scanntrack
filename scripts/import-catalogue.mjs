@@ -26,7 +26,10 @@ import { readFileSync } from "fs";
 import { resolve } from "path";
 import { createClient } from "@supabase/supabase-js";
 import * as XLSX from "xlsx";
-import "dotenv/config";
+import { config } from "dotenv";
+
+// Charger .env.local explicitement
+config({ path: ".env.local" });
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;

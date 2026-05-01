@@ -13,7 +13,10 @@ import { createClient } from "@supabase/supabase-js";
 import QRCode from "qrcode";
 import fs from "fs";
 import path from "path";
-import "dotenv/config";
+import { config } from "dotenv";
+
+// Charger .env.local explicitement
+config({ path: ".env.local" });
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
